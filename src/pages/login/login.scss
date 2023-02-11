@@ -1,0 +1,93 @@
+$mycolor: rgb(0 0 0 / 76%);
+
+.login {
+  height: 100vh;
+  background-color: rgba(161, 174, 182, 0.856);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  // margin: 0px;
+  .card {
+    display: flex;
+    width: 50%;
+    background-color: #ffff;
+    border-radius: 10px;
+    min-height: 500px;
+    overflow: hidden;
+
+    .left {
+      flex: 1;
+      display: flex;
+      background: linear-gradient(rgba(84, 82, 82, 0.698), rgb(0, 0, 0)),
+        url(https://cdn.pixabay.com/photo/2013/07/02/08/25/ball-142738_960_720.jpg)
+          center;
+      background-size: cover;
+      flex-direction: column;
+      gap: 30px;
+      padding: 20px;
+
+      color: #ffffff;
+
+      // border: 1px solid rgb(2, 2, 2);
+      h1 {
+        font-size: 100px;
+        line-height: 100px;
+      }
+
+      p {
+        font-size: 14px;
+      }
+
+      span {
+        font-size: 12px;
+      }
+
+      button {
+        width: 50%;
+        padding: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        border: none;
+        color: $mycolor;
+      }
+    }
+
+    .right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      gap: 50px;
+      justify-content: center;
+
+      // border: 1px solid black;
+      h1 {
+        color: $mycolor;
+        // font-size: 50px;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+
+        input {
+          border: none;
+          border-bottom: 1px solid grey;
+          padding: 20px 10px;
+          padding: 10px;
+        }
+
+        button {
+          padding: 10px;
+          width: 50%;
+          color: white;
+          font-weight: bold;
+          border: none;
+          background-color: $mycolor;
+        }
+      }
+    }
+  }
+}
