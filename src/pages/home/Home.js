@@ -1,8 +1,13 @@
 import React from 'react'
-
+import Posts from '../../components/posts/Posts'
+import Story from '../../components/stories/Story'
+import './home.scss'
 function Home() {
   return (
-    <div>Home</div>
+    <div className="home">
+      <Story/>
+      <Posts/>
+    </div>
   )
 }
 

@@ -1,0 +1,59 @@
+.leftBar{
+    position: sticky;
+    top: 74px;
+    overflow: scroll;
+    height: calc(100vh - 74px);
+    flex: 2;
+    &::-webkit-scrollbar{
+        display: none;
+    }
+    .container{
+        padding: 20px;
+     
+        hr{
+            margin: 10px 0px;
+            border: none;
+            height: 0.5px;
+            background-color: rgba(184, 174, 174, 0.482);
+        }
+        .menu{
+            display: flex;
+          
+            flex-direction: column;
+            gap: 10px;
+
+            .user{
+                display: flex;
+                align-items: center;
+                gap: 5px;
+
+                img{
+                    width: 30px;
+                    height: 30px;
+                    object-fit: cover;
+                    border-radius: 50%;
+                }
+                span{
+                    font-size: 14px;
+                    font-weight: bold;
+                }
+            }
+            .items{
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                img{
+                    width: 30px;
+
+                }
+                span{
+                    font-size: 14px;
+                    font-weight: bold;
+                }
+            }
+            span{
+                font-size: 14px;
+            }
+        }
+    }
+}

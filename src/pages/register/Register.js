@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { authContext } from '../../context/authContext';
 import './register.scss';
 export default function Register(){
+
+const {formD,handleChange}=useContext(authContext);
+
   return(
     <div className='register'>
       <div className='card'>
@@ -23,10 +27,10 @@ export default function Register(){
             <h1>Register</h1>
             <form>
 
-            <input type='text' placeholder='User name'/>
-            <input type='text' placeholder='email'/>
-            <input type='password' placeholder='password'/>
-            <input type='password' placeholder='confirm password'/>
+            <input type='text'  value={formD.name} name='name' onChange={handleChange} placeholder='formD name'/>
+            <input type='text' value={formD.email} name='email' onChange={handleChange} placeholder='email'/>
+            <input type='password' value={formD.password} name='password'  onChange={handleChange} placeholder='password'/>
+            <input type='password' value={formD.confirmPassword}  name='confirmPassword' onChange={handleChange} placeholder='confirm password'/>
           
             <button>Register</button>
             </form>

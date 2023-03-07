@@ -1,0 +1,60 @@
+
+$Color-white:rgb(255, 255, 255);
+$Color-black:rgb(29, 29, 29);
+.light{
+    .navbar{
+        background: $Color-white;
+        color:$Color-black;
+        span{color: $Color-black;}
+    }
+    .leftBar{
+        
+            
+
+                background: $Color-white;
+            
+
+            span{
+                color:$Color-black;}
+        
+    }
+    .rightBar{
+        .item{
+        background: $Color-white;
+        
+            span{color:$Color-black;}
+        }
+    }
+
+
+    background: rgb(241, 240, 240);
+    color: rgb(0, 0, 0);
+      
+}
+.dark{
+    .navbar{
+        background: $Color-black;
+        color:$Color-white;
+        span{color: $Color-white;}
+    }
+    .leftBar{
+        
+        background: $Color-black;
+
+            span{
+                color:$Color-white;}
+        
+    }
+    .rightBar{
+        .item{
+        background: $Color-black;
+            span{color: $Color-white;}
+        }
+    }
+
+
+    background: rgb(53, 52, 52);
+    color: white;
+   
+  
+}
