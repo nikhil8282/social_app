@@ -5,6 +5,7 @@ import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
+import { Link } from 'react-router-dom';
 function Post({ userPic, postImg, postDes, userName }) {
   const [comment, setComment] = useState(false);
 
@@ -14,7 +15,9 @@ function Post({ userPic, postImg, postDes, userName }) {
       <div className='container'>
         <div className='user'>
           <div className='user-info'>
-            <img src={userPic} />
+            <Link to='/profile/1'>
+              <img src={userPic} />
+              </Link>
             <div className='detail'>
               <span className='name'>{userName}</span>
               <span className='time'>1 min ago</span>

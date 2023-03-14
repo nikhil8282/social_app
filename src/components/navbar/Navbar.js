@@ -10,9 +10,11 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import Profile from '../../images/profile_img.webp'
 import { themeContext } from "../../context/themecontext";
+import { authContext } from "../../context/authContext";
 
 function Navbar() {
-  const {toggle}=useContext(themeContext)
+  const {toggle}=useContext(themeContext);
+  const {user}=useContext(authContext)
   return (
     <div className="navbar">
       <div className="left">
@@ -39,7 +41,7 @@ function Navbar() {
         <NotificationsNoneOutlinedIcon />
         <div className="user">
         <img src={Profile}  alt=''/>
-          <span>Gopal Das</span>
+          <span>{user.name}</span>
         </div>
       </div>
     </div>

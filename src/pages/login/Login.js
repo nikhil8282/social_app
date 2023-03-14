@@ -1,7 +1,37 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, {useState, useContext } from 'react';
+import { Link ,useNavigate} from 'react-router-dom';
+import { authContext } from '../../context/authContext';
 import "./login.scss"
 export default function Login(){
+  const {login}=useContext(authContext);
+  const [Err, seterr] = useState(null);
+  const navigate = useNavigate();
+  const [formD, setformd] = useState({ username: "", password: ""});
+
+  // handle onChange event
+  const handleChange = (e) => {
+    console.log("called")
+    setformd(p=>({ ...p, [e.target.name]: e.target.value }))
+  }
+  
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    console.log("login button is clicked")
+    try {
+    
+      await login(formD);
+      console.log("it is logged successfully")
+      
+      navigate("/");
+      
+    } catch (err) {
+      
+      seterr(err.response.data)
+    }
+  }
+  
+  // console.log(Err)
+
   return(
     <div className='login'>
       <div className='card'>
@@ -23,9 +53,13 @@ export default function Login(){
             <h1>Login</h1>
             <form>
 
-            <input type='text' placeholder='email'/>
-            <input type='password' placeholder='password'/>
-            <button>Login</button>
+            <input type='text' name='username' value={formD.username} onChange={handleChange} placeholder='username'/>
+            <input type='password' name='password' value={formD.password} onChange={handleChange} placeholder='password'/>
+           {
+            Err&&Err
+           }
+           
+            <button onClick={handleLogin}>Login</button>
             </form>
           </div>
         </div>

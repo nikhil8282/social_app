@@ -17,15 +17,19 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { themeContext } from "./context/themecontext";
+import { authContext } from "./context/authContext";
 
 function App() {
 const {theme}=useContext(themeContext);
 
-  const user = true;
+  const {user} = useContext(authContext);
   const ProtectRoute = ({ children }) => {
+    console.log(user)
     if (!user) return <Navigate to="/login" />;
-
+           
     return children;
+   
+      
   };
   const Layout = () => {
     console.log("rendered layout")
