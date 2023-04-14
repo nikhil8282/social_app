@@ -10,12 +10,22 @@ import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import './profile.scss'
 import Posts from '../../components/posts/Posts';
+import { useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { makeRequest } from '../../axios';
 function Profile() {
+  const {id}=useParams();
+
+  const {isloading,error,data}=useQuery(["user"],()=>{
+    return makeRequest(`/user?id=${id}`).then((res)=>res.data)
+  })
+  
+  // const {}
   return (
     <div className='profile'>
       <div className='images'>
-        <img className="cover" src='https://api.time.com/wp-content/uploads/2019/08/better-smartphone-photos.jpg' />
-        <img className='pic' src='http://localhost:3000/static/media/profile_img.3e5d0d59e52baf4513e8.webp' />
+        <img className="cover" src={data && data[0].coverPic} />
+        <img className='pic' src={data &&data[0].profilePic}/>
       </div>
       <div className='profileContainer'>
 
@@ -39,7 +49,7 @@ function Profile() {
 
           </div>
           <div className='center'>
-            <span>Nikhil Singh</span>
+            <span>{data && data[0].username}</span>
             <div className='info'>
               <div className='items'>
                 <PlaceIcon />

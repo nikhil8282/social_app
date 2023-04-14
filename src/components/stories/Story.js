@@ -6,13 +6,13 @@ const stories=[
         id:1,name:'nikhil',img:'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg'
     },
     {
-        id:1,name:'nikhil',img:'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg'
+        id:2,name:'nikhil',img:'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg'
     },
     {
-        id:1,name:'nikhil',img:'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg'
+        id:3,name:'nikhil',img:'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg'
     },
     {
-        id:1,name:'nikhil',img:'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg'
+        id:4,name:'nikhil',img:'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg'
     },
 
 ]
@@ -27,7 +27,7 @@ function Story() {
             </div>    
         {
             stories.map((story)=>(
-              <div className='story'>
+              <div key={story.id} className='story'>
                         <img src={story.img}/>
                         <span>{story.name}</span>
                         

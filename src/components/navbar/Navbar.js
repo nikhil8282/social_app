@@ -8,7 +8,7 @@ import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
-import Profile from '../../images/profile_img.webp'
+// import Profile from '../../images/profile_img.webp'
 import { themeContext } from "../../context/themecontext";
 import { authContext } from "../../context/authContext";
 
@@ -40,7 +40,7 @@ function Navbar() {
         <PersonOutlineOutlinedIcon />
         <NotificationsNoneOutlinedIcon />
         <div className="user">
-        <img src={Profile}  alt=''/>
+        <img src={user.profilePic}  alt=''/>
           <span>{user.name}</span>
         </div>
       </div>

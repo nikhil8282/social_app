@@ -1,29 +1,27 @@
 import React from 'react'
-
+import {useQuery} from '@tanstack/react-query'
 import './posts.scss'
 import Post from './Post';
+import { makeRequest } from '../../axios';
 
 function  Posts() {
-  const posts=[
-    {
-      id:1,name:'nikhil',img:'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',userPic:'http://localhost:3000/static/media/profile_img.3e5d0d59e52baf4513e8.webp',des:'oihiofdjggoidfg d gd gsd fgdrgrem wr trt  '
-  },
-  {
-      id:1,name:'nikhil',img:'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',userPic:'http://localhost:3000/static/media/profile_img.3e5d0d59e52baf4513e8.webp',des:'oihiofdjggoidfg d gd gsd fgd wrtv  yrtyvery  rt y e rtue b y erty ert'
-  },
-  {
-      id:1,name:'nikhil',img:'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',userPic:'http://localhost:3000/static/media/profile_img.3e5d0d59e52baf4513e8.webp',des:'oihiofdjggoidfg d gd rgrem wr trt  wrtv  yrtyvery  rt y e rtue b y erty ert'
-  },
-  {
-      id:1,name:'nikhil',img:'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',userPic:'http://localhost:3000/static/media/profile_img.3e5d0d59e52baf4513e8.webp',des:'oihiofdjggoidfg d gd gsd fgdrgrem wr trt  wrtv  yrtyvery  rt y e rtue b y erty ert'
-  },
-   
-  ]
+  const {isloading,error,data}= useQuery(["post"],()=>
+
+    makeRequest.get("/posts").then((res)=>res.data)
+    );
+ 
+  
   return (
     <div className='posts'>
+      
       {
-        posts.map(post=>(
-          <Post userName={post.name} userPic={post.userPic} postDes={post.des} postImg={post.img} />
+        error
+        ?`${error}`
+        : isloading
+        ?
+        "loading":
+       data?.map(post=>(
+          <Post key={post.id}  post={post}/>
         ))
       }
       </div>
