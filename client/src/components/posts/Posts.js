@@ -10,7 +10,7 @@ function  Posts() {
     makeRequest.get("/posts").then((res)=>res.data)
     );
  
-  
+   
   return (
     <div className='posts'>
       
@@ -19,7 +19,7 @@ function  Posts() {
         ?`${error}`
         : isloading
         ?
-        "loading":
+        "loading...":
        data?.map(post=>(
           <Post key={post.id}  post={post}/>
         ))

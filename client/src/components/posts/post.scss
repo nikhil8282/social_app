@@ -53,13 +53,29 @@
 
         .info {
             display: flex;
-            gap: 30px;
-
-            .items {
+            // gap: 30px;
+            justify-content: space-between;
+            .left{
                 display: flex;
-                align-items: center;
-                gap: 5px;
+            gap: 30px;
+                .items {
+                    display: flex;
+                    align-items: center;
+                    gap: 5px;
+                    cursor: pointer;
+                    
+                }
+            }
+            .right{
+
                 
+                .items {
+                    display: flex;
+                    align-items: center;
+                    cursor: pointer;
+                    
+                    
+                }
             }
         }
 

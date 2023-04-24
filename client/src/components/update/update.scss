@@ -1,0 +1,36 @@
+.update{
+    background: rgb(247, 247, 247);
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    right: 100px;
+    top: 10px;
+    .card{
+        
+       
+        .formBox{
+            width: 300px;
+            .row{
+                margin-bottom: 5px;
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+                // justify-content: center;
+                // align-items: center;
+                input{
+                    // width: 200px; 
+                }
+                
+            }
+            .btn{
+                display: flex;
+                gap: 10px;
+            }
+        }
+    }
+}

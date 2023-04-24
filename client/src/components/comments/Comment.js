@@ -5,13 +5,13 @@ import { useQuery,useMutation,useQueryClient } from '@tanstack/react-query'
 import moment from "moment"
 import { authContext } from '../../context/authContext'
 
-function Comment({postId}) {
+function Comment({postId,data}) {
     const [des,setDes]=useState("");
     const {user}= useContext(authContext);
     const queryClient= useQueryClient();
-    const {isloading,error,data}= useQuery(["comments"],()=>{
-        return makeRequest.get(`/comments?postId=${postId}`).then(res=>res.data);
-    })
+    // const {isloading,error,data}= useQuery(["comments"],()=>{
+    //     return makeRequest.get(`/comments?postId=${postId}`).then(res=>res.data);
+    // })
 
 
     const mutation = useMutation(
@@ -20,7 +20,7 @@ function Comment({postId}) {
     ,{
   
       onSuccess:()=>{
-        queryClient.invalidateQueries(["comments"])
+        queryClient.invalidateQueries(["comments",postId])
       }
     })
     const handleClick= (e)=>{
@@ -45,11 +45,7 @@ function Comment({postId}) {
 
         </div>
         {
-             error
-             ?`${error}`
-             : isloading
-             ?
-             "loading":
+            
             data?.map(com=>(
                 <div key={com.id} className='comment'>
                     <img src={com.profilePic}/>
