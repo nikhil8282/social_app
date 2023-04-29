@@ -1,6 +1,4 @@
-
-
-.navbar{
+.navbar {
     display: flex;
     padding: 10px 20px;
     justify-content: space-between;
@@ -10,47 +8,90 @@
     position: sticky;
     top: 0;
     z-index: 999;
-  
-    .left{
+
+    .left {
         display: flex;
         align-items: center;
         gap: 30px;
-        span{
+
+        span {
             // color: $mycolor;  
             font-size: 20px;
             font-weight: bold;
         }
-        .search{
-            
-            display: flex;
-            align-items: center;
-            border:1px solid rgb(175, 175, 175);
-            border-radius: 5px;
-            padding:5px;
-            gap:10px;
-            input{
-                border: none;
-                width: 500px;
-        
+
+        .search {
+            max-height: 40px;
+            .top {
+
+                display: flex;
+                align-items: center;
+                border: 1px solid rgb(175, 175, 175);
+                border-radius: 5px;
+                padding: 5px;
+                gap: 10px;
+                // height: 200px;
+
+                .ipt {
+                    border: none;
+                    width: 500px;
+                    height: 10px;
+                    padding: 10px;
+
+
+                }
             }
+            .down{
+               background: white;
+               display: flex;
+               flex-direction: column;
+            //    gap: 10px;
+               padding: 5px;
+
+               .itm{
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                padding: 5px;
+                cursor: pointer;
+
+                img{
+                    height: 30px;
+                    width: 30px;
+                    object-fit: cover;
+                    border-radius: 50%;
+                }
+
+               
+               }
+               .itm:hover{
+                background: #f1efef;
+               }
+            }
+
         }
 
     }
-    .right{
+
+    .right {
         display: flex;
         align-items: center;
-      
+
         gap: 20px;
-        .user{
-display: flex;
-align-items: center;
-gap: 5px;
-            img{
+
+        .user {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+
+            img {
                 width: 30px;
+                height: 30px;
                 object-fit: cover;
                 border-radius: 50%;
             }
-            span{
+
+            span {
                 font-weight: 800;
             }
         }

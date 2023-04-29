@@ -9,9 +9,7 @@ function Comment({postId,data}) {
     const [des,setDes]=useState("");
     const {user}= useContext(authContext);
     const queryClient= useQueryClient();
-    // const {isloading,error,data}= useQuery(["comments"],()=>{
-    //     return makeRequest.get(`/comments?postId=${postId}`).then(res=>res.data);
-    // })
+
 
 
     const mutation = useMutation(
@@ -39,7 +37,7 @@ function Comment({postId,data}) {
     <div className='comments'>
 
         <div className='input-sec'>
-            <img src={user.profilePic}/>
+            <img src={`/uploaded/${user.profilePic}`}/>
             <input type='text' value={des} onChange={(e)=>setDes(e.target.value)} placeholder="write comment"/>
             <button onClick={handleClick}>send</button>
 
@@ -48,7 +46,7 @@ function Comment({postId,data}) {
             
             data?.map(com=>(
                 <div key={com.id} className='comment'>
-                    <img src={com.profilePic}/>
+                    <img src={`/uploaded/${com.profilePic}`}/>
                     <div className="info">
                         <span >{com.username}</span>
                         <p>{com.des}</p>

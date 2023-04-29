@@ -1,5 +1,8 @@
-import React , {useContext} from 'react'
 import './leftBar.scss'
+import  {useContext} from 'react'
+import { authContext } from '../../context/authContext'
+import { Link } from 'react-router-dom'
+
 import Friends from '../../images/1.png'
 import Groups from '../../images/2.png'
 import Market from '../../images/3.png'
@@ -13,8 +16,7 @@ import Messages from '../../images/10.png'
 import Tutorial from '../../images/11.png'
 import Courses from '../../images/12.png'
 import Fund from '../../images/13.png'
-// import Profile from '../../images/profile_img.webp'
-import { authContext } from '../../context/authContext'
+
 function LeftBar() {
   const {user}=useContext(authContext)
   return (
@@ -22,7 +24,9 @@ function LeftBar() {
       <div className='container'>
         <div className='menu'>
         <div className='user'>
-        <img src={user.profilePic}  alt=''/>
+        <Link to={`/profile/${user.id}`}>
+              <img src={"/uploaded/"+user.profilePic} />
+            </Link>
           <span>{user.name}</span>
         </div>
         <div className='items'>

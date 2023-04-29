@@ -6,6 +6,8 @@ import { useContext, useState } from "react";
 import { authContext } from "../../context/authContext";
 import {useMutation,useQueryClient} from "@tanstack/react-query"
 import { makeRequest } from "../../axios";
+import { Link } from "react-router-dom";
+
 
 const Share = () => {
   const queryClient = useQueryClient();
@@ -38,7 +40,9 @@ const upload = async ()=>{
     e.preventDefault();
     let fileName="";
     if(file)fileName=await upload();
-    mutation.mutate({des,img:fileName})
+    mutation.mutate({des,img:fileName});
+    setFile(null);
+    setDes("");
   }
   const handleChange=(e)=>{
     console.log("changed");
@@ -52,10 +56,9 @@ const upload = async ()=>{
         <div className="top">
         <div className="left">
 
-          <img
-            src={"http://localhost:3000/static/media/profile_img.3e5d0d59e52baf4513e8.webp"}
-            alt=""
-            />
+        <Link to={`/profile/${user.id}`}>
+              <img src={"/uploaded/"+user.profilePic} />
+            </Link>
           <input type="text" placeholder={`What's on your mind ${user.name}?`} value={des} onChange={(e)=>setDes(e.target.value)} />
             </div>
           <div className="right">{

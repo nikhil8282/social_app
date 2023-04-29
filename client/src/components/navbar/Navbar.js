@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./navbar.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import AppsOutlinedIcon from "@mui/icons-material/AppsOutlined";
@@ -11,10 +11,32 @@ import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNone
 // import Profile from '../../images/profile_img.webp'
 import { themeContext } from "../../context/themecontext";
 import { authContext } from "../../context/authContext";
+import { makeRequest } from "../../axios";
 
 function Navbar() {
   const {toggle}=useContext(themeContext);
-  const {user}=useContext(authContext)
+  const {user}=useContext(authContext);
+  const [name,setname]=useState("");
+  const [allUsers,setAllUsers]=useState(null);
+  const navigate = useNavigate();
+  const [fillterUsers,setFillterUsers]=useState([]);
+  
+  useEffect(()=>{
+    makeRequest.get("/user").then(res=>{setAllUsers(res.data)});
+    
+  },[user])
+  useEffect(()=>{
+    if(name!==""){
+      let arr= allUsers?.filter(obj=>obj.username.includes(name));
+     setFillterUsers([...arr]);
+    }
+    else{
+     setFillterUsers([]);
+    }
+
+  },[name])
+  console.log(fillterUsers);
+  
   return (
     <div className="navbar">
       <div className="left">
@@ -31,8 +53,26 @@ function Navbar() {
           
         <AppsOutlinedIcon />
         <div className="search">
+          <div className="top">
+
           <SearchOutlinedIcon />
-          <input type="text" placeholder="search..." />
+          <input type="text" placeholder="search..." className="ipt"  value={name} onChange={(e)=>setname(e.target.value)}/>
+          </div>
+          <div className="down">
+            {
+              fillterUsers.map(u=>(
+                  
+                  <div className="itm" key={u.id} onClick={()=>{setname("");navigate(`/profile/${u.id}`)}}>
+
+              <img src={`/uploaded/${u.profilePic}`}/>
+                
+              <span>{u.username}</span>
+            </div>))
+            }
+           
+            
+          </div>
+
         </div>
       </div>
       <div className="right">
@@ -40,7 +80,9 @@ function Navbar() {
         <PersonOutlineOutlinedIcon />
         <NotificationsNoneOutlinedIcon />
         <div className="user">
-        <img src={user.profilePic}  alt=''/>
+        <Link to={`/profile/${user.id}`}>
+              <img src={`/uploaded/${user.profilePic}`} />
+            </Link>
           <span>{user.name}</span>
         </div>
       </div>

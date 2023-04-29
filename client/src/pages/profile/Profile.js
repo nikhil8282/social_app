@@ -1,4 +1,4 @@
-import './profile.scss'
+import "./profile.scss";
 import FacebookTwoToneIcon from "@mui/icons-material/FacebookTwoTone";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import InstagramIcon from "@mui/icons-material/Instagram";
@@ -8,118 +8,279 @@ import PlaceIcon from "@mui/icons-material/Place";
 import LanguageIcon from "@mui/icons-material/Language";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
 
-import React, { useContext, useState } from 'react'
-import { useParams } from 'react-router-dom';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { makeRequest } from '../../axios';
-import { authContext } from '../../context/authContext';
+import React, { useContext, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { makeRequest } from "../../axios";
+import { authContext } from "../../context/authContext";
 
-import Update from '../../components/update/Update';
-import Posts from '../../components/posts/Posts';
-
+import Update from "../../components/update/Update";
+import Posts from "../../components/posts/Posts";
 
 function Profile() {
-  const [isupdate,setisupdate]=useState(false);
-  const {id}=useParams();
+  const [isupdate, setisupdate] = useState(false);
+  const [coverBox, setcoverBox] = useState(false);
+  const [profileBox, setprofileBox] = useState(false);
+  const { id } = useParams();
   const queryClient = useQueryClient();
-  const {user}=useContext(authContext);
-  const {isloading,error,data}=useQuery(["user",id],()=>{
-    return makeRequest(`/user/find/${id}`).then((res)=>res.data)
-  })
+  const { user, getUser } = useContext(authContext);
+  const { username, name, email, coverPic, profilePic } = user;
 
-  // api to get followers of current users ids list
+  const [file, setFile] = useState(null);
+  // console.log(user)
+  // fetch data of user
+  console.log(user);
+  const { isloading, error, data } = useQuery(["user", id], () => {
+    return makeRequest.get(`/user/${id}`).then((res) => res.data);
+  });
 
-  const mutation = useMutation((isFollow)=>{
-    if(isFollow)return makeRequest.delete("/relation?userId="+id)
-    return makeRequest.post("/relation?userId="+id)
-  },{
-    onSuccess:()=>{
-      queryClient.invalidateQueries(["relation"])
+  // code to handle post and delete request for follow and unfollow method
+  const relationMutation = useMutation(
+    (isFollow) => {
+      if (isFollow) return makeRequest.delete("/relation?userId=" + id);
+      return makeRequest.post("/relation?userId=" + id);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["relation"]);
+      },
     }
-  })
+  );
 
-  const handleClick=(e)=>{
+  // function to handle follow or unfollow method
+  const handleClick = (e) => {
     e.preventDefault();
-    mutation.mutate(followedIds.includes(+id))
-  }
-  
-  const {data:followedIds}=useQuery(["relation"],()=>makeRequest.get("/relation").then(res=>res.data))
+    relationMutation.mutate(followedIds.includes(+id));
+  };
 
-  const handleChange=(e)=>{
+  // fetch relation data of user
+  const { data: followedIds } = useQuery(["relation"], () =>
+    makeRequest.get("/relation").then((res) => res.data)
+  );
+
+  // handle to change profile pic
+  const handleClickUpdateProfile = async (e) => {
     e.preventDefault();
+    let fileName = "";
+    if (file) fileName = await upload();
+    console.log(fileName);
+    userMutation.mutate({
+      username,
+      name,
+      email,
+      coverPic,
+      profilePic: fileName,
+    });
+    getUser(user.id);
+    setcoverBox(!coverBox);
+  };
+
+  // handle to change cover pic
+  const handleClickUpdateCover = async (e) => {
+    e.preventDefault();
+    let fileName = "";
+    if (file) fileName = await upload();
+    userMutation.mutate({
+      username,
+      name,
+      email,
+      coverPic: fileName,
+      profilePic,
+    });
+    getUser(user.id);
+    setprofileBox(!profileBox);
+  };
+
+  const upload = async () => {
+    try {
+      const newform = new FormData();
+      newform.append("file", file);
+      const res = await makeRequest.post("/upload", newform);
+      return res.data;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const userMutation = useMutation((p) => makeRequest.put("/user/update", p), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["user", id]);
+    },
+  });
+
+  const handleChange = (e) => {
+    setFile(e.target.files[0]);
+    console.log(file);
+  };
+
+  // show update box handle
+  const showUpdate = () => {
     setisupdate(!isupdate);
-  }
-  
-  // const {}
+  };
+
   return (
-    <div className='profile'>
-      {
-        error?"error":isloading?"loading...":(
+    <div className="profile">
+      {error ? (
+        "error"
+      ) : isloading ? (
+        "loading..."
+      ) : (
+        <div className="images">
+          <img
+            className="cover"
+            src={`/uploaded/${data?.coverPic}`}
+            onClick={() => {
+              setcoverBox(!coverBox);
+              setprofileBox(false);
+            }}
+          />
+          <img
+            className="pic"
+            src={`/uploaded/${data?.profilePic}`}
+            onClick={() => {
+              setcoverBox(false);
+              setprofileBox(!profileBox);
+            }}
+          />
 
-        <div className='images'>
-        <img className="cover" src={data && (data[0].coverPic === null ?"/uploaded/b.webp":data[0].coverPic)} />
-        <img className='pic' src={data && (data[0].profilePic === null ?"/uploaded/b.webp":data[0].profilePic)}/>
-        {id===user.id && <span className='pen coverPen'><CreateOutlinedIcon fontSize="1"/></span>}
-        {id===user.id && <span className='pen profilePen'><CreateOutlinedIcon fontSize="1"/></span>}
-      </div>
-          )
-      }
-      <div className='profileContainer'>
+          {coverBox && (
+            <div className="container ">
+              <img
+                src={
+                  file
+                    ? URL.createObjectURL(file)
+                    : "/uploaded/" + data?.coverPic
+                }
+              />
+              {+id === user.id && (
+                <>
+                  <input
+                    type="file"
+                    id="coverFile"
+                    style={{ display: "none" }}
+                    onChange={handleChange}
+                  />
 
-        <div className='userInfo'>
-          <div className='left'>
-            <a href='https://facebook.com' target='/'>
-              <FacebookTwoToneIcon fontSize='medium' />
-            </a>
-            <a href='https://pinterest.com' target='/'>
-              <PinterestIcon fontSize='medium' />
-            </a>
-            <a href='https://instagram.com' target='/'>
-              <InstagramIcon fontSize='medium' />
-            </a>
-            <a href='https://linkedin.com' target='/'>
-              <LinkedInIcon fontSize='medium' />
-            </a>
-            <a href='https://twitter.com' target="/">
-              <TwitterIcon fontSize='medium' />
-            </a>
+                  <label htmlFor="coverFile">
+                    <span className="edit-btn btn">Edit</span>
+                  </label>
 
+                  <button
+                    className="okbtn btn"
+                    onClick={handleClickUpdateCover}
+                  >
+                    ok
+                  </button>
+                </>
+              )}
+              <button
+                onClick={() => {
+                  setcoverBox(!coverBox);
+                  setFile(null);
+                }}
+                className="canclebtn"
+              >
+                x
+              </button>
+            </div>
+          )}
+          {profileBox && (
+            <div className="container ">
+              <img
+                src={
+                  file
+                    ? URL.createObjectURL(file)
+                    : "/uploaded/" + data?.profilePic
+                }
+              />
+              {+id === user.id && (
+                <>
+                  <input
+                    type="file"
+                    id="profileFile"
+                    style={{ display: "none" }}
+                    onChange={handleChange}
+                  />
+
+                  <label htmlFor="profileFile">
+                    <span className="edit-btn btn">Edit</span>
+                  </label>
+
+                  <button
+                    onClick={handleClickUpdateProfile}
+                    className="okbtn btn"
+                  >
+                    ok
+                  </button>
+                </>
+              )}
+              <button
+                onClick={(e) => {
+                  setFile(null);
+                  setprofileBox(!profileBox);
+                }}
+                className="canclebtn"
+              >
+                X
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      <div className="profileContainer">
+        <div className="userInfo">
+          <div className="left">
+            <a href="https://facebook.com" target="/">
+              <FacebookTwoToneIcon fontSize="medium" />
+            </a>
+            <a href="https://pinterest.com" target="/">
+              <PinterestIcon fontSize="medium" />
+            </a>
+            <a href="https://instagram.com" target="/">
+              <InstagramIcon fontSize="medium" />
+            </a>
+            <a href="https://linkedin.com" target="/">
+              <LinkedInIcon fontSize="medium" />
+            </a>
+            <a href="https://twitter.com" target="/">
+              <TwitterIcon fontSize="medium" />
+            </a>
           </div>
-          <div className='center'>
-            <span>{data && data[0].username}</span>
-            <div className='info'>
-              <div className='items'>
+          <div className="center">
+            <span>{data && data.username}</span>
+            <div className="info">
+              <div className="items">
                 <PlaceIcon />
-                <span>
-                  place
-                </span>
+                <span>place</span>
               </div>
-              <div className='items'>
+              <div className="items">
                 <LanguageIcon />
-                <span>
-                  language
-                </span>
+                <span>language</span>
               </div>
             </div>
 
-            {
-              +id === user.id?
-              <button onClick={handleChange}>update</button>:
-              <button onClick={handleClick}>{followedIds?.includes(+id)?"Following":"Follow"}</button>
-            }
+            {+id === user.id ? (
+              <button onClick={() => setisupdate(!isupdate)}>update</button>
+            ) : (
+              <button onClick={handleClick}>
+                {followedIds?.includes(+id) ? "Following" : "Follow"}
+              </button>
+            )}
           </div>
-          <div className='right'>
+          <div className="right">
             <EmailOutlinedIcon />
             <MoreVertIcon />
           </div>
         </div>
-      {isupdate &&  <Update handleChange={handleChange}/> }
-      <Posts/>
+        {isupdate && (
+          <Update showUpdate={showUpdate} userMutation={userMutation} />
+        )}
+        <Posts />
       </div>
     </div>
-  )
+  );
 }
 
-export default Profile
+export default Profile;
