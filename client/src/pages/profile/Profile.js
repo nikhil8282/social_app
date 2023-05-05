@@ -8,6 +8,7 @@ import PlaceIcon from "@mui/icons-material/Place";
 import LanguageIcon from "@mui/icons-material/Language";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { CircularProgress } from "@mui/material";
 
 import React, { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -30,8 +31,8 @@ function Profile() {
   const [file, setFile] = useState(null);
   // console.log(user)
   // fetch data of user
-  console.log(user);
-  const { isloading, error, data } = useQuery(["user", id], () => {
+  // console.log(user);
+  const { isloading, error, data } = useQuery(["user", +id], () => {
     return makeRequest.get(`/user/${id}`).then((res) => res.data);
   });
 
@@ -44,6 +45,7 @@ function Profile() {
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["relation"]);
+        queryClient.invalidateQueries(["post"])
       },
     }
   );
@@ -59,37 +61,50 @@ function Profile() {
     makeRequest.get("/relation").then((res) => res.data)
   );
 
+// delete image 
+  const delPost=(imgName)=>{
+    makeRequest.delete("/delete/"+imgName)
+}
+
   // handle to change profile pic
   const handleClickUpdateProfile = async (e) => {
     e.preventDefault();
     let fileName = "";
-    if (file) fileName = await upload();
-    console.log(fileName);
-    userMutation.mutate({
-      username,
-      name,
-      email,
-      coverPic,
-      profilePic: fileName,
-    });
-    getUser(user.id);
-    setcoverBox(!coverBox);
+    if (file){
+      
+      fileName = await upload();
+      if(user.profilePic)delPost(user.profilePic);
+     console.log(fileName);
+     userMutation.mutate({
+       username,
+       name,
+       email,
+       coverPic,
+       profilePic: fileName,
+     });
+     getUser(user.id);
+    }
+    setprofileBox(!profileBox);
   };
 
   // handle to change cover pic
   const handleClickUpdateCover = async (e) => {
     e.preventDefault();
     let fileName = "";
-    if (file) fileName = await upload();
-    userMutation.mutate({
-      username,
-      name,
-      email,
-      coverPic: fileName,
-      profilePic,
-    });
-    getUser(user.id);
-    setprofileBox(!profileBox);
+    if (file){
+      fileName = await upload();
+      userMutation.mutate({
+        username,
+        name,
+        email,
+        coverPic: fileName,
+        profilePic,
+      });
+      getUser(user.id);
+      if(user.coverPic)delPost(user.coverPic);
+
+    } 
+    setcoverBox(!coverBox);
   };
 
   const upload = async () => {
@@ -105,7 +120,7 @@ function Profile() {
 
   const userMutation = useMutation((p) => makeRequest.put("/user/update", p), {
     onSuccess: () => {
-      queryClient.invalidateQueries(["user", id]);
+      queryClient.invalidateQueries(["user", +id]);
     },
   });
 
@@ -127,30 +142,43 @@ function Profile() {
         "loading..."
       ) : (
         <div className="images">
-          <img
-            className="cover"
-            src={`/uploaded/${data?.coverPic}`}
+
+          <div className="cover">
+          {
+            data?
+            <img
+            
+            src={`/uploaded/${data.coverPic?data.coverPic:"a.jpg"}`}
             onClick={() => {
               setcoverBox(!coverBox);
               setprofileBox(false);
             }}
-          />
-          <img
-            className="pic"
-            src={`/uploaded/${data?.profilePic}`}
+            />:
+            <CircularProgress color="secondary" className="coverSpinner" />
+          }
+          </div>
+          <div className="pic">
+          {
+            data?<img
+            
+            src={`/uploaded/${data.profilePic?profilePic:"b.webp"}`}
             onClick={() => {
               setcoverBox(false);
               setprofileBox(!profileBox);
             }}
-          />
-
+            />:
+            <CircularProgress color="secondary" className="profileSpinner" />
+            
+          }
+          </div>
+          
           {coverBox && (
             <div className="container ">
               <img
                 src={
                   file
                     ? URL.createObjectURL(file)
-                    : "/uploaded/" + data?.coverPic
+                    : `/uploaded/${data?.coverPic?coverPic:"b.webp"}`
                 }
               />
               {+id === user.id && (
@@ -191,7 +219,7 @@ function Profile() {
                 src={
                   file
                     ? URL.createObjectURL(file)
-                    : "/uploaded/" + data?.profilePic
+                    : `/uploaded/${ data?.profilePic?profilePic:"b.webp"}`
                 }
               />
               {+id === user.id && (

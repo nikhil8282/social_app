@@ -70,9 +70,9 @@ const postMutation = useMutation(()=>makeRequest.delete("/posts?postId="+id),{on
       <div className="container">
         <div className="user">
           <div className="user-info">
-            <Link to={`/profile/${userId}`}>
-              <img src={"/uploaded/"+profilePic} />
-            </Link>
+            <a href={`/profile/${userId}`}>
+              <img src={`/uploaded/${profilePic?profilePic:"b.webp"}`} />
+            </a>
             <div className="detail">
               <span className="name">{username}</span>
               <span className="time">{moment(createdAt).fromNow()}</span>
@@ -109,9 +109,12 @@ const postMutation = useMutation(()=>makeRequest.delete("/posts?postId="+id),{on
           </div>
           </div>
           <div className="right">
+           {
+            userId===user.id &&
             <div className="items">
               <DeleteOutlineOutlinedIcon onClick={handleDeletePost}/>
             </div>
+           }
           </div>
         </div>
         {comment && <Comment postId={id} data={comments} />}

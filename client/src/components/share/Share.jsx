@@ -57,7 +57,7 @@ const upload = async ()=>{
         <div className="left">
 
         <Link to={`/profile/${user.id}`}>
-              <img src={"/uploaded/"+user.profilePic} />
+        <img src={`/uploaded/${user.profilePic?user.profilePic:"b.webp"}`} />
             </Link>
           <input type="text" placeholder={`What's on your mind ${user.name}?`} value={des} onChange={(e)=>setDes(e.target.value)} />
             </div>

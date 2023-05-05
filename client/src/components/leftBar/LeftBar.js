@@ -25,7 +25,7 @@ function LeftBar() {
         <div className='menu'>
         <div className='user'>
         <Link to={`/profile/${user.id}`}>
-              <img src={"/uploaded/"+user.profilePic} />
+              <img src={`/uploaded/${user.profilePic?user.profilePic:"b.webp"}`} />
             </Link>
           <span>{user.name}</span>
         </div>

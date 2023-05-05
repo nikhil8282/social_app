@@ -35,7 +35,7 @@ function Navbar() {
     }
 
   },[name])
-  console.log(fillterUsers);
+  // console.log(fillterUsers);
   
   return (
     <div className="navbar">
@@ -64,7 +64,7 @@ function Navbar() {
                   
                   <div className="itm" key={u.id} onClick={()=>{setname("");navigate(`/profile/${u.id}`)}}>
 
-              <img src={`/uploaded/${u.profilePic}`}/>
+              <img src={`/uploaded/${u.profilePic?u.profilePic:"b.webp"}`} />
                 
               <span>{u.username}</span>
             </div>))
@@ -81,7 +81,7 @@ function Navbar() {
         <NotificationsNoneOutlinedIcon />
         <div className="user">
         <Link to={`/profile/${user.id}`}>
-              <img src={`/uploaded/${user.profilePic}`} />
+              <img src={`/uploaded/${user.profilePic?user.profilePic:"b.webp"}`} />
             </Link>
           <span>{user.name}</span>
         </div>
